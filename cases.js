@@ -17,6 +17,23 @@
   - Pakai tanda kutip ganda "..." dan jangan lupa koma di akhir tiap baris.
 */
 window.CASES = [
+  // PREVIEW ENTRY: hapus blok ini kalau case study asli sudah siap.
+  {
+    id: "coming-soon",
+    code: "XX-01",
+    title: "Case study coming soon",
+    category: "IT Support",
+    date: "Soon",
+    status: "Soon",
+    tools: ["Soon"],
+    summary: "Soon.",
+    sections: [
+      { heading: "Problem", text: ["Soon."] },
+      { heading: "Diagnosis", text: ["Soon."] },
+      { heading: "Solution", ordered: true, list: ["Soon.", "Soon.", "Soon."] },
+      { heading: "Result", text: ["Soon."] }
+    ]
+  },
   // {
   //   id: "contoh-id",
   //   code: "XX-01",
