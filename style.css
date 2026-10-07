@@ -140,3 +140,20 @@ h1{font-weight:900;font-variation-settings:"wdth" 62;font-size:clamp(5.4rem,27.5
 .d-sec figcaption{font-family:var(--serif);font-style:italic;margin-top:8px}
 .lost{padding:clamp(56px,9vw,120px) 0}
 
+
+/* maximalist layer */
+body{overflow-x:hidden}
+.skills .lab,.exp .lab,.arch .lab{grid-column:1/-1;font-weight:900;font-variation-settings:"wdth" 62;text-transform:uppercase;font-size:clamp(4rem,17vw,15rem);line-height:.8;letter-spacing:-.02em;margin:0 0 clamp(28px,4vw,60px) -.03em}
+.skills .lab{text-shadow:.035em .035em 0 var(--lemon)}
+.exp .lab{text-shadow:.035em .035em 0 var(--honey)}
+.arch .lab{text-shadow:.035em .035em 0 var(--matcha)}
+.creds{transform:rotate(-1.4deg);margin:-1.2rem -3vw 0;padding:0 3vw;position:relative;z-index:3}
+.skills .main>div{padding:20px 22px 24px}
+.skills .main>div:nth-child(1),.skills .main>div:nth-child(5){background:var(--lemon)}
+.skills .main>div:nth-child(3){background:var(--honey)}
+.skills .main>div:nth-child(2),.skills .main>div:nth-child(6){background:var(--sea);color:var(--lemon)}
+.skills .main>div:nth-child(4){background:var(--ink);color:var(--lemon)}
+.skills .main>div:nth-child(even) h3{border-color:var(--lemon)}
+.case .st{transform:rotate(-4deg);font-weight:900;font-variation-settings:"wdth" 75;text-transform:uppercase;border:3px solid var(--ink);font-size:1.15rem;padding:6px 14px}
+.case:hover{background:var(--lemon);color:var(--ink)}
+.case:hover .st{background:var(--sea);color:var(--lemon);border-color:var(--sea)}
