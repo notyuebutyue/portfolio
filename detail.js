@@ -11,6 +11,7 @@
     s.appendChild(w);main.appendChild(s);document.title='Not found | Yurida Zani';return;
   }
   document.title=c.title+' | Yurida Zani';
+  var md=document.querySelector('meta[name=description]');if(md&&c.summary)md.setAttribute('content',c.summary);
   var hero=el('header','hero'),hw=el('div','wrap');
   var back=el('a','back','All case studies');back.href='index.html#cases';hw.appendChild(back);
   hw.appendChild(el('h1','d-title',c.title));
