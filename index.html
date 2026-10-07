@@ -2,7 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBD271">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Yurida Zani">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Yurida Zani">
+<meta property="og:title" content="Yurida Zani | IT Support & Technical Helpdesk">
+<meta property="og:description" content="Fresh Informatics graduate focused on IT support: hardware and software troubleshooting, basic networking, and helpdesk.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23FBD271'/%3E%3Ctext x='32' y='46' font-family='Arial' font-weight='900' font-size='38' text-anchor='middle' fill='%23372516'%3EYZ%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Yurida Zani","jobTitle":"IT Support and Helpdesk (entry level)","description":"Informatics graduate focused on IT support: hardware and software troubleshooting, basic networking, and helpdesk.","alumniOf":{"@type":"CollegeOrUniversity","name":"Universitas Muhammadiyah Sidoarjo"},"knowsAbout":["IT support","Helpdesk","Troubleshooting","Basic networking","Web development"],"sameAs":["https://linkedin.com/in/yurida-zani-b35321211/","https://github.com/yuridazani"]}
+</script>
 <title>Yurida Zani | IT Support & Technical Helpdesk</title>
 <meta name="description" content="Informatics graduate focused on IT support: hardware and software troubleshooting, basic networking, and helpdesk.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,12 +44,12 @@
     <div class="grid hero-grid">
       <p class="tag">and Technical Helpdesk.</p>
       <div class="intro">
-        <p>Bachelor's graduate in Informatics (S1 Teknik Informatika) from Universitas Muhammadiyah Sidoarjo, GPA 3.75/4.00, specialising in hardware maintenance, technical troubleshooting and user support (helpdesk). I have practical experience assembling and upgrading PC and laptop components (RAM and SSD), installing operating systems (Windows and Linux Ubuntu/Debian), and setting up basic wired LAN networks. I can explain technical issues in a structured way, read English technical documentation, and use AI tools to speed up finding solutions to everyday technical problems.</p>
+        <p>Fresh Informatics grad (S1 Teknik Informatika, Universitas Muhammadiyah Sidoarjo, GPA 3.75/4.00) who is into hardware, troubleshooting, and helping people get unstuck. I've assembled and upgraded PCs and laptops (RAM and SSD), installed Windows and Linux (Ubuntu/Debian), and set up basic wired LAN. I can explain tech problems in a clear, step-by-step way, read English tech docs, and use AI tools to find fixes faster.</p>
       </div>
       <div class="cta">
-        <a class="btn solid" href="https://1drv.ms/b/c/2044f462849bb9ac/IQBFz-uVJ_5uQLx807udfdUaARjUzpIf9uBIYN5SBMhJlr8?e=SAF1aL">Download CV</a>
-        <a class="btn" href="mailto:yuridazani.personal@gmail.com">Email me</a>
-        <a class="btn" href="https://wa.me/6282338351245">WhatsApp</a>
+        <a class="btn solid" href="https://1drv.ms/b/c/2044f462849bb9ac/IQBFz-uVJ_5uQLx807udfdUaARjUzpIf9uBIYN5SBMhJlr8?e=SAF1aL">Grab my CV</a>
+        <a class="btn" href="mailto:yuridazani.personal@gmail.com">Drop me a mail</a>
+        <a class="btn" href="https://wa.me/6282338351245">Chat on WhatsApp</a>
       </div>
       <figure class="photo">
         <div class="frame"><img src="Pic1.jpg" alt="Photo of Yurida Zani" width="640" height="800"></div>
@@ -63,7 +76,7 @@
       <div id="case-list">
         <div class="empty">
         <p>Nothing here yet.</p>
-        <small>IT support case studies will be added once they are written.</small>
+        <small>The first case studies are on the way.</small>
       </div>
       </div>
     </div>
@@ -127,7 +140,7 @@
   <div class="wrap grid">
     <h2 class="lab">Archive</h2>
     <div class="main">
-      <p>Web development projects from my earlier work.</p>
+      <p>Web dev projects I worked on earlier. Not my main focus now, but they're still part of my story.</p>
       <ul>
         <li><a href="https://generasi-biru-app.vercel.app/">Generasi Biru <span>Activist movement platform.</span><span class="stack">React, Framer Motion, React Hook Form</span></a></li>
         <li><a href="https://roomora-app.vercel.app/">Roomora <span>Property booking web app with global state management and responsive UI.</span><span class="stack">React, Vite, Tailwind CSS</span></a></li>
@@ -147,7 +160,7 @@
 
 <section class="contact" id="contact">
   <div class="wrap">
-    <h2>Let's work together.</h2>
+    <h2>Say hi.</h2>
     <div class="row">
       <a class="mail" href="mailto:yuridazani.personal@gmail.com">yuridazani.personal@gmail.com</a>
     </div>
@@ -188,6 +201,18 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if(c.status){var st=document.createElement('div');st.className='st';st.textContent=c.status;row.appendChild(st);}
     box.appendChild(row);
   });
+})();
+</script>
+<script>
+(function(){
+  var h=document.querySelector('h1');if(!h)return;
+  function fit(){
+    h.style.fontSize='';
+    var w=h.clientWidth,s=h.scrollWidth;
+    if(s>w){h.style.fontSize=(parseFloat(getComputedStyle(h).fontSize)*w/s*0.97)+'px';}
+  }
+  fit();addEventListener('resize',fit);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 })();
 </script>
 </body>
