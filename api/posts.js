@@ -20,7 +20,6 @@ export default async function handler(req, res) {
         return res.status(200).json(rows(await db.execute('SELECT * FROM posts ORDER BY created_at DESC')));
       }
       const r = await db.execute("SELECT id,slug,kind,title,category,excerpt,url,source,created_at FROM posts WHERE status='published' ORDER BY created_at DESC");
-      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
       return res.status(200).json(rows(r));
     }
 
