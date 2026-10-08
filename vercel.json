@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/writing/:slug", "destination": "/api/post?slug=:slug" }
+  ]
+}

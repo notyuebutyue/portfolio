@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.ad{padding:clamp(24px,4vw,56px) 0}
+.ad h1{font-size:clamp(2.4rem,7vw,5rem);white-space:normal;margin:0 0 24px}
+.ad label{display:block;font-weight:800;margin:16px 0 6px}
+.ad input[type=text],.ad input[type=password],.ad select,.ad textarea{font:inherit;width:100%;padding:10px 12px;border:3px solid var(--ink);background:var(--honey);color:var(--ink);border-radius:0}
+.ad textarea{min-height:340px;resize:vertical}
+.ad .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ad .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.ad button{font:inherit;font-weight:800;padding:12px 20px;border:3px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.ad button.solid{background:var(--ink);color:var(--lemon)}
+.msg{margin-top:14px;font-weight:700;min-height:1.5em}
+.pl{list-style:none;margin-top:12px}
+.pl li button{display:flex;justify-content:space-between;gap:12px;width:100%;text-align:left;border-width:0 0 3px 0;padding:12px 0}
+.pl li button:hover{background:var(--ink);color:var(--lemon);padding-inline:10px}
+.chip{background:var(--matcha);color:var(--ink);padding:0 8px;font-size:.85rem;align-self:center}
+.chip.d{background:var(--honey)}
+.hide{display:none}
+.hint{font-size:.9rem;margin-top:4px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(20px,4vw,56px)}
+@media(max-width:820px){.cols,.ad .row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap ad">
+  <h1>Admin</h1>
+
+  <div id="login">
+    <label for="pw">Password</label>
+    <input type="password" id="pw" autocomplete="current-password">
+    <div class="acts"><button class="solid" id="go" type="button">Log in</button></div>
+    <p class="msg" id="lmsg"></p>
+  </div>
+
+  <div id="app" class="hide">
+    <div class="acts" style="margin:0 0 20px"><button id="new" type="button">New post</button><button id="exp" type="button">Export all (JSON)</button><button id="out" type="button">Log out</button></div>
+    <div class="cols">
+      <div><strong>All posts</strong><ul class="pl" id="plist"></ul></div>
+      <div>
+        <label for="kind">Type</label>
+        <select id="kind"><option value="own">My own post (written here)</option><option value="external">Link to Medium, Kompasiana, etc.</option></select>
+        <label for="title">Title</label><input type="text" id="title" maxlength="200">
+        <div class="row2">
+          <div><label for="category">Category</label><input type="text" id="category" maxlength="40" placeholder="Tech, Life, Opinion..."></div>
+          <div><label for="status">Status</label><select id="status"><option value="draft">Draft (only you)</option><option value="published">Published</option></select></div>
+        </div>
+        <div id="extf" class="hide">
+          <label for="url">Link</label><input type="text" id="url" placeholder="https://...">
+          <label for="source">Source name</label><input type="text" id="source" placeholder="Medium, Kompasiana...">
+        </div>
+        <label for="excerpt">Short summary <span style="font-weight:400">(optional for own posts, shown on cards)</span></label>
+        <input type="text" id="excerpt" maxlength="300">
+        <div id="ownf">
+          <label for="body">Text</label><textarea id="body"></textarea>
+          <p class="hint">Format: # Heading, ## Subheading, **bold**, *italic*, [text](https://link), lines starting with - for bullets.</p>
+        </div>
+        <div class="acts"><button class="solid" id="save" type="button">Save</button><button id="del" type="button" class="hide">Delete</button></div>
+        <p class="msg" id="msg"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var $=function(s){return document.querySelector(s);},pw=sessionStorage.getItem('pw')||'',cur=null;
+async function api(method,q,body){
+  var r=await fetch('/api/posts'+(q||''),{method:method,headers:{'content-type':'application/json','x-admin-password':pw},body:body?JSON.stringify(body):undefined});
+  if(r.status===401)throw new Error('Wrong password');
+  if(!r.ok){var e={};try{e=await r.json();}catch(x){}throw new Error(e.error||'Error '+r.status);}
+  return r.json();
+}
+function say(id,t){$(id).textContent=t;}
+function kindUI(){var ext=$('#kind').value==='external';$('#extf').classList.toggle('hide',!ext);$('#ownf').classList.toggle('hide',ext);}
+function blank(){cur=null;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value='';});$('#kind').value='own';$('#status').value='draft';$('#del').classList.add('hide');say('#msg','');kindUI();}
+async function list(){
+  var ps=await api('GET','?all=1'),ul=$('#plist');ul.textContent='';
+  if(!ps.length){var li=document.createElement('li');li.textContent='No posts yet.';ul.appendChild(li);}
+  ps.forEach(function(p){
+    var li=document.createElement('li'),b=document.createElement('button'),t=document.createElement('span'),c=document.createElement('span');
+    b.type='button';t.textContent=p.title;c.textContent=p.status==='published'?'Published':'Draft';c.className='chip'+(p.status==='published'?'':' d');
+    b.appendChild(t);b.appendChild(c);b.onclick=function(){fill(p);};li.appendChild(b);ul.appendChild(li);
+  });
+}
+function fill(p){cur=p.id;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value=p[k]||'';});$('#kind').value=p.kind;$('#status').value=p.status;$('#del').classList.remove('hide');say('#msg','');kindUI();window.scrollTo({top:0,behavior:'smooth'});}
+async function enter(){$('#login').classList.add('hide');$('#app').classList.remove('hide');blank();await list();}
+async function login(){
+  pw=$('#pw').value||pw;say('#lmsg','Checking...');
+  try{await api('GET','?all=1');sessionStorage.setItem('pw',pw);say('#lmsg','');await enter();}
+  catch(e){pw='';sessionStorage.removeItem('pw');say('#lmsg',e.message);}
+}
+$('#go').onclick=login;$('#pw').onkeydown=function(e){if(e.key==='Enter')login();};
+$('#kind').onchange=kindUI;$('#new').onclick=blank;
+$('#out').onclick=function(){sessionStorage.removeItem('pw');location.reload();};
+$('#save').onclick=async function(){
+  say('#msg','Saving...');
+  try{
+    var d={id:cur,kind:$('#kind').value,title:$('#title').value,category:$('#category').value,status:$('#status').value,url:$('#url').value,source:$('#source').value,excerpt:$('#excerpt').value,body:$('#body').value};
+    var r=await api('POST','',d);cur=r.id;$('#del').classList.remove('hide');say('#msg','Saved. Public pages update within about a minute.');await list();
+  }catch(e){say('#msg',e.message);}
+};
+$('#del').onclick=async function(){
+  if(!cur||!confirm('Delete this post for good?'))return;
+  try{await api('DELETE','?id='+cur);blank();say('#msg','Deleted.');await list();}catch(e){say('#msg',e.message);}
+};
+$('#exp').onclick=async function(){
+  try{var ps=await api('GET','?all=1'),a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([JSON.stringify(ps,null,2)],{type:'application/json'}));
+    a.download='posts-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+  catch(e){say('#msg',e.message);}
+};
+if(pw)login();
+</script>
+</body>
+</html>

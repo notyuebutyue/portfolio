@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Writing | Yurida Zani</title>
+<meta name="description" content="Things Yurida Zani has written, about tech and everything else. Some live here, some on Medium and Kompasiana.">
+<meta name="theme-color" content="#FBD271">
+<link rel="canonical" href="https://yurida-zani.vercel.app/writing.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0}
+.filters button{font:inherit;font-weight:800;padding:8px 16px;border:3px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--lemon)}
+.wrow{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);gap:6px 24px;padding:22px 0;border-top:3px solid var(--ink);text-decoration:none;color:inherit}
+.wrow:last-child{border-bottom:3px solid var(--ink)}
+.wrow:hover{background:var(--ink);color:var(--honey);padding-inline:12px}
+.wrow h2{font-weight:800;font-variation-settings:"wdth" 85;font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.1}
+.wrow p{font-family:var(--serif);font-size:1.1rem;margin-top:6px}
+.wrow .m{font-weight:700;font-size:.95rem;text-align:right}
+.empty-note{font-family:var(--serif);font-size:1.3rem}
+@media(max-width:820px){.wrow{grid-template-columns:1fr}.wrow .m{text-align:left}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a href="index.html">Yurida Zani</a>
+    <nav aria-label="Main navigation">
+      <a href="index.html#cases">Case studies</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#projects">Web projects</a>
+      <a href="writing.html">Writing</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 class="d-title">Writing</h1>
+    <p class="d-sum">Stuff I've written about tech and everything else. Some of it lives here, some on Medium and Kompasiana.</p>
+    <div class="filters" id="filters"></div>
+  </div>
+</header>
+
+<section class="d-sec">
+  <div class="wrap"><div id="list" aria-live="polite">Loading...</div></div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Say hi.</h2>
+    <div class="row"><a class="mail" href="mailto:yuridazani.personal@gmail.com">yuridazani.personal@gmail.com</a></div>
+    <footer class="foot">
+      <div><h3>Socials</h3><ul>
+        <li><a href="https://wa.me/6282338351245">WhatsApp</a></li>
+        <li><a href="https://linkedin.com/in/yurida-zani-b35321211/">LinkedIn</a></li>
+        <li><a href="https://github.com/yuridazani">GitHub</a></li>
+        <li><a href="https://medium.com/@yuridzn">Medium</a></li>
+        <li><a href="https://instagram.com/saturdayyuri">Instagram</a></li>
+      </ul></div>
+      <div><h3>Based in</h3><p>Pandaan, East Java, Indonesia</p></div>
+      <div><p>&copy; 2026 Yurida Zani. All Rights Reserved.</p></div>
+    </footer>
+  </div>
+</section>
+
+<script>
+(async function(){
+  var list=document.getElementById('list'),filters=document.getElementById('filters'),posts=[],cat='All';
+  function note(t){list.textContent='';var p=document.createElement('p');p.className='empty-note';p.textContent=t;list.appendChild(p);}
+  try{var r=await fetch('/api/posts');posts=await r.json();if(!Array.isArray(posts))throw 0;}catch(e){note('Could not load posts right now. Please try again later.');return;}
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e;}
+  function render(){
+    var shown=posts.filter(function(p){return cat==='All'||p.category===cat;});
+    if(!shown.length){note(posts.length?'Nothing in this category yet.':'Nothing here yet. The first posts are on the way.');return;}
+    list.textContent='';
+    shown.forEach(function(p){
+      var a=el('a','wrow'),ext=p.kind==='external';
+      a.href=ext?p.url:'/writing/'+encodeURIComponent(p.slug);
+      if(ext){a.target='_blank';a.rel='noopener';}
+      var l=el('div');l.appendChild(el('h2','',p.title));if(p.excerpt)l.appendChild(el('p','',p.excerpt));
+      var d=new Date(p.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+      var m=el('div','m',[ext?(p.source||'External link'):'On this site',p.category,d].filter(Boolean).join(', '));
+      a.appendChild(l);a.appendChild(m);list.appendChild(a);
+    });
+  }
+  var cats=['All'].concat(Array.from(new Set(posts.map(function(p){return p.category;}).filter(Boolean))));
+  if(cats.length>2)cats.forEach(function(c){
+    var b=el('button','',c);b.type='button';b.setAttribute('aria-pressed',c===cat);
+    b.onclick=function(){cat=c;Array.prototype.forEach.call(filters.children,function(x){x.setAttribute('aria-pressed',x===b);});render();};
+    filters.appendChild(b);
+  });
+  render();
+})();
+</script>
+</body>
+</html>
