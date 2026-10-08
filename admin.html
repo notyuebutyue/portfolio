@@ -2,123 +2,264 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Admin</title>
+<meta name="theme-color" content="#FBD271">
+<title>Admin | Yurida Zani</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
 <style>
-.ad{padding:clamp(24px,4vw,56px) 0}
-.ad h1{font-size:clamp(2.4rem,7vw,5rem);white-space:normal;margin:0 0 24px}
-.ad label{display:block;font-weight:800;margin:16px 0 6px}
-.ad input[type=text],.ad input[type=password],.ad select,.ad textarea{font:inherit;width:100%;padding:10px 12px;border:3px solid var(--ink);background:var(--honey);color:var(--ink);border-radius:0}
-.ad textarea{min-height:340px;resize:vertical}
-.ad .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.ad .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.ad button{font:inherit;font-weight:800;padding:12px 20px;border:3px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
-.ad button.solid{background:var(--ink);color:var(--lemon)}
-.msg{margin-top:14px;font-weight:700;min-height:1.5em}
-.pl{list-style:none;margin-top:12px}
-.pl li button{display:flex;justify-content:space-between;gap:12px;width:100%;text-align:left;border-width:0 0 3px 0;padding:12px 0}
-.pl li button:hover{background:var(--ink);color:var(--lemon);padding-inline:10px}
-.chip{background:var(--matcha);color:var(--ink);padding:0 8px;font-size:.85rem;align-self:center}
-.chip.d{background:var(--honey)}
-.hide{display:none}
-.hint{font-size:.9rem;margin-top:4px}
-.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(20px,4vw,56px)}
-@media(max-width:820px){.cols,.ad .row2{grid-template-columns:1fr}}
+:root{--lemon:#FBD271;--sea:#0F4E77;--matcha:#89A377;--honey:#E7BD8B;--ink:#372516;--sans:"Archivo","Helvetica Neue",Arial,sans-serif;--serif:"Newsreader",Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--lemon);color:var(--ink);line-height:1.5;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sea);outline-offset:2px}
+.hide{display:none!important}
+.cond{font-weight:900;font-variation-settings:"wdth" 62;text-transform:uppercase;letter-spacing:-.02em;line-height:.85}
+.f{display:block;margin-top:18px}
+.f>span{display:block;font-weight:800;margin-bottom:6px}
+.f small{font-weight:400;font-family:var(--serif);font-size:1rem}
+.in{width:100%;padding:12px 14px;border:3px solid var(--ink);background:var(--honey);border-radius:0}
+.in::placeholder{color:rgba(55,37,22,.6)}
+.b{display:inline-block;padding:11px 20px;font-weight:800;font-variation-settings:"wdth" 90;border:3px solid var(--ink);background:transparent;cursor:pointer;border-radius:0}
+.b:hover{background:var(--ink);color:var(--lemon)}
+.b.p{background:var(--ink);color:var(--lemon);box-shadow:5px 5px 0 var(--sea)}
+.b.p:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--sea)}
+.b.s{padding:7px 12px;font-size:.95rem}
+
+/* login */
+#login{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh}
+.l-art{background:var(--sea);color:var(--lemon);padding:clamp(24px,4vw,56px);display:flex;flex-direction:column;justify-content:flex-end;gap:20px;position:relative;overflow:hidden}
+.l-art .cond{font-size:clamp(5rem,15vw,14rem)}
+.l-art p{max-width:22em;font-family:var(--serif);font-size:1.2rem}
+.stamp{position:absolute;top:clamp(16px,4vw,48px);right:clamp(16px,4vw,48px);transform:rotate(7deg);background:var(--matcha);color:var(--ink);border:3px solid var(--ink);padding:8px 14px;font-weight:900;font-variation-settings:"wdth" 70;text-transform:uppercase}
+.l-form{display:flex;align-items:center;padding:clamp(24px,5vw,72px)}
+.l-form form{width:100%;max-width:26rem}
+.l-form h2{font-size:2rem;font-weight:800;font-variation-settings:"wdth" 80;line-height:1.1}
+.pwrow{display:flex}.pwrow .in{border-right:0}.pwrow .b{border-left:3px solid var(--ink)}
+.err{margin-top:14px;font-weight:700;min-height:1.5em}
+
+/* app */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px clamp(16px,3vw,40px);border-bottom:3px solid var(--ink)}
+.top .cond{font-size:1.9rem;line-height:1}
+.top nav{display:flex;gap:8px;flex-wrap:wrap}
+.ws{display:grid;grid-template-columns:minmax(260px,340px) 1fr}
+.side{background:var(--sea);color:var(--lemon);padding:20px;border-right:3px solid var(--ink);position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto}
+.side :focus-visible{outline-color:var(--lemon)}
+.side-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.side-h .cond{font-size:2.6rem}
+.side .b{border-color:var(--lemon);color:var(--lemon)}
+.side .b:hover{background:var(--lemon);color:var(--ink)}
+.pl{list-style:none}
+.pl button{display:block;width:100%;text-align:left;background:none;border:0;border-top:3px solid var(--lemon);padding:12px 8px;cursor:pointer;color:var(--lemon)}
+.pl button:hover,.pl button.on{background:var(--lemon);color:var(--ink)}
+.pl .t{display:block;font-weight:800;line-height:1.2}
+.pl .m{display:flex;gap:8px;margin-top:5px;font-size:.85rem;align-items:center}
+.chip{padding:0 8px;font-weight:800;font-size:.8rem;background:var(--honey);color:var(--ink)}
+.chip.pub{background:var(--matcha)}
+.none{padding:12px 8px;border-top:3px solid var(--lemon);font-family:var(--serif);font-size:1.1rem}
+.ed{padding:clamp(16px,3vw,40px)}
+.ed-h{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.ed-h .cond{font-size:clamp(2.4rem,5vw,4rem)}
+#dirty{font-weight:700;font-family:var(--serif);font-style:italic}
+.seg{display:flex;border:3px solid var(--ink);width:max-content;max-width:100%;flex-wrap:wrap}
+.seg label{cursor:pointer;position:relative}
+.seg input{position:absolute;opacity:0;inset:0}
+.seg span{display:block;padding:9px 16px;font-weight:800}
+.seg input:checked+span{background:var(--ink);color:var(--lemon)}
+.seg input:focus-visible+span{outline:3px solid var(--sea);outline-offset:-6px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.tabs{display:flex;gap:0;margin-top:18px}
+.tabs button{padding:8px 16px;font-weight:800;border:3px solid var(--ink);background:transparent;cursor:pointer;border-radius:0}
+.tabs button+button{border-left:0}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--lemon)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+textarea.in{min-height:380px;resize:vertical}
+.meta{display:flex;justify-content:space-between;gap:12px;margin-top:6px;font-size:.9rem}
+.prev{border:3px solid var(--ink);background:var(--honey);padding:20px;min-height:380px}
+.prev>*+*{margin-top:1em}.prev h2,.prev h3,.prev h4{font-weight:800;font-variation-settings:"wdth" 85;line-height:1.1;margin-top:1.4em}
+.prev ul,.prev ol{margin-left:1.2em}.prev a{font-weight:700}.prev code{background:var(--lemon);padding:1px 5px}
+.acts{position:sticky;bottom:0;margin-top:26px;padding:14px 0;background:var(--lemon);border-top:3px solid var(--ink);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.acts .sp{flex:1}
+#toast{position:fixed;right:16px;bottom:16px;z-index:9;max-width:calc(100vw - 32px);padding:12px 18px;font-weight:800;background:var(--ink);color:var(--lemon);border:3px solid var(--ink);transform:translateY(160%)}
+#toast.show{transform:none}
+#toast.bad{background:var(--honey);color:var(--ink)}
+@media(prefers-reduced-motion:no-preference){#toast{transition:transform .2s}}
+@media(max-width:900px){
+  #login{grid-template-columns:1fr}.l-art{min-height:38vh}
+  .ws{grid-template-columns:1fr}.side{position:static;max-height:300px;border-right:0;border-bottom:3px solid var(--ink)}
+  .row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="wrap ad">
-  <h1>Admin</h1>
 
-  <div id="login">
-    <label for="pw">Password</label>
-    <input type="password" id="pw" autocomplete="current-password">
-    <div class="acts"><button class="solid" id="go" type="button">Log in</button></div>
-    <p class="msg" id="lmsg"></p>
+<div id="login">
+  <div class="l-art">
+    <div class="stamp">Private</div>
+    <div class="cond">Admin</div>
+    <p>Writing desk for Yurida's portfolio. Posts, drafts, and links live here.</p>
   </div>
-
-  <div id="app" class="hide">
-    <div class="acts" style="margin:0 0 20px"><button id="new" type="button">New post</button><button id="exp" type="button">Export all (JSON)</button><button id="out" type="button">Log out</button></div>
-    <div class="cols">
-      <div><strong>All posts</strong><ul class="pl" id="plist"></ul></div>
-      <div>
-        <label for="kind">Type</label>
-        <select id="kind"><option value="own">My own post (written here)</option><option value="external">Link to Medium, Kompasiana, etc.</option></select>
-        <label for="title">Title</label><input type="text" id="title" maxlength="200">
-        <div class="row2">
-          <div><label for="category">Category</label><input type="text" id="category" maxlength="40" placeholder="Tech, Life, Opinion..."></div>
-          <div><label for="status">Status</label><select id="status"><option value="draft">Draft (only you)</option><option value="published">Published</option></select></div>
-        </div>
-        <div id="extf" class="hide">
-          <label for="url">Link</label><input type="text" id="url" placeholder="https://...">
-          <label for="source">Source name</label><input type="text" id="source" placeholder="Medium, Kompasiana...">
-        </div>
-        <label for="excerpt">Short summary <span style="font-weight:400">(optional for own posts, shown on cards)</span></label>
-        <input type="text" id="excerpt" maxlength="300">
-        <div id="ownf">
-          <label for="body">Text</label><textarea id="body"></textarea>
-          <p class="hint">Format: # Heading, ## Subheading, **bold**, *italic*, [text](https://link), lines starting with - for bullets.</p>
-        </div>
-        <div class="acts"><button class="solid" id="save" type="button">Save</button><button id="del" type="button" class="hide">Delete</button></div>
-        <p class="msg" id="msg"></p>
-      </div>
-    </div>
+  <div class="l-form">
+    <form id="lf" autocomplete="on">
+      <h2>Welcome back.</h2>
+      <label class="f" for="pw"><span>Password</span>
+        <div class="pwrow"><input class="in" id="pw" type="password" autocomplete="current-password" required><button class="b s" id="eye" type="button" aria-pressed="false">Show</button></div>
+      </label>
+      <div style="margin-top:22px"><button class="b p" id="go" type="submit">Log in</button></div>
+      <p class="err" id="lmsg" role="alert"></p>
+    </form>
   </div>
 </div>
 
+<div id="app" class="hide">
+  <header class="top">
+    <div class="cond">YZ Admin</div>
+    <nav aria-label="Admin actions"><a class="b s" href="/writing.html" target="_blank" rel="noopener">View site</a><button class="b s" id="exp" type="button">Export backup</button><button class="b s" id="out" type="button">Log out</button></nav>
+  </header>
+  <div class="ws">
+    <aside class="side" aria-label="All posts">
+      <div class="side-h"><div class="cond">Posts</div><button class="b s" id="new" type="button">New post</button></div>
+      <ul class="pl" id="plist"></ul>
+    </aside>
+    <main class="ed">
+      <div class="ed-h"><div class="cond" id="edt">New post</div><span id="dirty" aria-live="polite"></span></div>
+
+      <div class="f"><span>Type</span>
+        <div class="seg" role="radiogroup" aria-label="Type">
+          <label><input type="radio" name="kind" value="own" checked><span>Written here</span></label>
+          <label><input type="radio" name="kind" value="external"><span>Link to Medium, Kompasiana...</span></label>
+        </div>
+      </div>
+
+      <label class="f" for="title"><span>Title</span><input class="in" id="title" maxlength="200"></label>
+      <div class="row">
+        <label class="f" for="category"><span>Category</span><input class="in" id="category" maxlength="40" placeholder="Tech, Life, Opinion..."></label>
+        <div class="f"><span>Status</span>
+          <div class="seg" role="radiogroup" aria-label="Status">
+            <label><input type="radio" name="status" value="draft" checked><span>Draft</span></label>
+            <label><input type="radio" name="status" value="published"><span>Published</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div id="extf" class="hide">
+        <div class="row">
+          <label class="f" for="url"><span>Link</span><input class="in" id="url" placeholder="https://..."></label>
+          <label class="f" for="source"><span>Source name</span><input class="in" id="source" maxlength="40" placeholder="Medium, Kompasiana..."></label>
+        </div>
+      </div>
+
+      <label class="f" for="excerpt"><span>Short summary <small>(shown on the cards)</small></span><input class="in" id="excerpt" maxlength="300"></label>
+
+      <div id="ownf">
+        <div class="tabs" role="group" aria-label="Editor mode"><button type="button" id="tw" aria-pressed="true">Write</button><button type="button" id="tp" aria-pressed="false">Preview</button></div>
+        <div id="wr">
+          <div class="tools" aria-label="Formatting">
+            <button class="b s" type="button" data-t="h">Heading</button><button class="b s" type="button" data-t="b">Bold</button><button class="b s" type="button" data-t="i">Italic</button><button class="b s" type="button" data-t="l">Link</button><button class="b s" type="button" data-t="u">Bullet</button>
+          </div>
+          <label class="in-wrap" for="body"><span class="hide">Text</span><textarea class="in" id="body"></textarea></label>
+          <div class="meta"><span id="wc">0 words</span><span>Format: # Heading, **bold**, *italic*, [text](https://link), - bullet</span></div>
+        </div>
+        <div id="pv" class="prev hide"></div>
+      </div>
+
+      <div class="acts">
+        <button class="b p" id="save" type="button">Save</button>
+        <span class="sp"></span>
+        <button class="b" id="del" type="button">Delete</button>
+      </div>
+    </main>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
 <script>
-var $=function(s){return document.querySelector(s);},pw=sessionStorage.getItem('pw')||'',cur=null;
+var $=function(s){return document.querySelector(s);},pw=sessionStorage.getItem('pw')||'',cur=null,dirty=false,tt;
+function toast(m,bad){var t=$('#toast');t.textContent=m;t.className='show'+(bad?' bad':'');clearTimeout(tt);tt=setTimeout(function(){t.className='';},3500);}
 async function api(method,q,body){
   var r=await fetch('/api/posts'+(q||''),{method:method,headers:{'content-type':'application/json','x-admin-password':pw},body:body?JSON.stringify(body):undefined});
   if(r.status===401)throw new Error('Wrong password');
   if(!r.ok){var e={};try{e=await r.json();}catch(x){}throw new Error(e.error||'Error '+r.status);}
   return r.json();
 }
-function say(id,t){$(id).textContent=t;}
-function kindUI(){var ext=$('#kind').value==='external';$('#extf').classList.toggle('hide',!ext);$('#ownf').classList.toggle('hide',ext);}
-function blank(){cur=null;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value='';});$('#kind').value='own';$('#status').value='draft';$('#del').classList.add('hide');say('#msg','');kindUI();}
+function rv(n){return document.querySelector('input[name='+n+']:checked').value;}
+function sv(n,v){document.querySelector('input[name='+n+'][value='+v+']').checked=true;}
+function ui(){var ext=rv('kind')==='external';$('#extf').classList.toggle('hide',!ext);$('#ownf').classList.toggle('hide',ext);}
+function mark(){dirty=true;$('#dirty').textContent='Unsaved changes';wc();}
+function clean(){dirty=false;$('#dirty').textContent='';}
+function wc(){var w=$('#body').value.trim().split(/\s+/).filter(Boolean).length;$('#wc').textContent=w+(w===1?' word':' words');}
+function mode(p){$('#tw').setAttribute('aria-pressed',!p);$('#tp').setAttribute('aria-pressed',p);$('#wr').classList.toggle('hide',p);$('#pv').classList.toggle('hide',!p);if(p)$('#pv').innerHTML=md($('#body').value)||'<p>Nothing to preview yet.</p>';}
+function blank(){cur=null;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value='';});sv('kind','own');sv('status','draft');$('#del').classList.add('hide');$('#edt').textContent='New post';mode(false);ui();wc();clean();mark_on();}
+function mark_on(){document.querySelectorAll('.pl button').forEach(function(b){b.classList.toggle('on',+b.dataset.id===cur);});}
+function fill(p){if(dirty&&!confirm('Discard unsaved changes?'))return;cur=p.id;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value=p[k]||'';});sv('kind',p.kind);sv('status',p.status);$('#del').classList.remove('hide');$('#edt').textContent='Edit post';mode(false);ui();wc();clean();mark_on();window.scrollTo({top:0,behavior:'smooth'});}
 async function list(){
   var ps=await api('GET','?all=1'),ul=$('#plist');ul.textContent='';
-  if(!ps.length){var li=document.createElement('li');li.textContent='No posts yet.';ul.appendChild(li);}
+  if(!ps.length){var n=document.createElement('li');n.className='none';n.textContent='No posts yet. Write your first one.';ul.appendChild(n);}
   ps.forEach(function(p){
-    var li=document.createElement('li'),b=document.createElement('button'),t=document.createElement('span'),c=document.createElement('span');
-    b.type='button';t.textContent=p.title;c.textContent=p.status==='published'?'Published':'Draft';c.className='chip'+(p.status==='published'?'':' d');
-    b.appendChild(t);b.appendChild(c);b.onclick=function(){fill(p);};li.appendChild(b);ul.appendChild(li);
+    var li=document.createElement('li'),b=document.createElement('button'),t=document.createElement('span'),m=document.createElement('span'),c=document.createElement('span');
+    b.type='button';b.dataset.id=p.id;t.className='t';t.textContent=p.title;m.className='m';c.className='chip'+(p.status==='published'?' pub':'');c.textContent=p.status==='published'?'Published':'Draft';
+    m.appendChild(c);m.appendChild(document.createTextNode(p.kind==='external'?'Link':'Own post'));b.appendChild(t);b.appendChild(m);b.onclick=function(){fill(p);};li.appendChild(b);ul.appendChild(li);
   });
+  mark_on();
 }
-function fill(p){cur=p.id;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value=p[k]||'';});$('#kind').value=p.kind;$('#status').value=p.status;$('#del').classList.remove('hide');say('#msg','');kindUI();window.scrollTo({top:0,behavior:'smooth'});}
 async function enter(){$('#login').classList.add('hide');$('#app').classList.remove('hide');blank();await list();}
-async function login(){
-  pw=$('#pw').value||pw;say('#lmsg','Checking...');
-  try{await api('GET','?all=1');sessionStorage.setItem('pw',pw);say('#lmsg','');await enter();}
-  catch(e){pw='';sessionStorage.removeItem('pw');say('#lmsg',e.message);}
+async function login(e){
+  if(e)e.preventDefault();
+  var v=$('#pw').value||pw;if(!v)return;pw=v;$('#lmsg').textContent='Checking...';$('#go').disabled=true;
+  try{await api('GET','?all=1');sessionStorage.setItem('pw',pw);$('#lmsg').textContent='';await enter();}
+  catch(x){pw='';sessionStorage.removeItem('pw');$('#lmsg').textContent=x.message;$('#pw').select();}
+  $('#go').disabled=false;
 }
-$('#go').onclick=login;$('#pw').onkeydown=function(e){if(e.key==='Enter')login();};
-$('#kind').onchange=kindUI;$('#new').onclick=blank;
+$('#lf').onsubmit=login;
+$('#eye').onclick=function(){var s=$('#pw').type==='password';$('#pw').type=s?'text':'password';this.textContent=s?'Hide':'Show';this.setAttribute('aria-pressed',s);};
+document.querySelectorAll('input[name=kind]').forEach(function(r){r.onchange=function(){ui();mark();};});
+document.querySelectorAll('input[name=status]').forEach(function(r){r.onchange=mark;});
+['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).addEventListener('input',mark);});
+$('#tw').onclick=function(){mode(false);};$('#tp').onclick=function(){mode(true);};
+$('#new').onclick=function(){if(dirty&&!confirm('Discard unsaved changes?'))return;blank();window.scrollTo({top:0,behavior:'smooth'});};
 $('#out').onclick=function(){sessionStorage.removeItem('pw');location.reload();};
-$('#save').onclick=async function(){
-  say('#msg','Saving...');
-  try{
-    var d={id:cur,kind:$('#kind').value,title:$('#title').value,category:$('#category').value,status:$('#status').value,url:$('#url').value,source:$('#source').value,excerpt:$('#excerpt').value,body:$('#body').value};
-    var r=await api('POST','',d);cur=r.id;$('#del').classList.remove('hide');say('#msg','Saved. Public pages update within about a minute.');await list();
-  }catch(e){say('#msg',e.message);}
-};
+function wrap(a,b,ph){var t=$('#body'),s=t.selectionStart,e=t.selectionEnd,v=t.value,sel=v.slice(s,e)||ph;t.value=v.slice(0,s)+a+sel+b+v.slice(e);t.focus();t.selectionStart=s+a.length;t.selectionEnd=s+a.length+sel.length;mark();}
+function pre(p){var t=$('#body'),s=t.selectionStart,v=t.value,ls=v.lastIndexOf('\n',s-1)+1;t.value=v.slice(0,ls)+p+v.slice(ls);t.focus();t.selectionStart=t.selectionEnd=s+p.length;mark();}
+document.querySelectorAll('.tools button').forEach(function(b){b.onclick=function(){var k=b.dataset.t;if(k==='h')pre('## ');else if(k==='u')pre('- ');else if(k==='b')wrap('**','**','bold text');else if(k==='i')wrap('*','*','italic text');else wrap('[','](https://)','link text');};});
+async function save(){
+  var d={id:cur,kind:rv('kind'),title:$('#title').value,category:$('#category').value,status:rv('status'),url:$('#url').value,source:$('#source').value,excerpt:$('#excerpt').value,body:$('#body').value};
+  $('#save').disabled=true;
+  try{var r=await api('POST','',d);cur=r.id;$('#del').classList.remove('hide');$('#edt').textContent='Edit post';clean();await list();toast('Saved.');}
+  catch(e){toast(e.message,true);}
+  $('#save').disabled=false;
+}
+$('#save').onclick=save;
+document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='s'&&!$('#app').classList.contains('hide')){e.preventDefault();save();}});
 $('#del').onclick=async function(){
   if(!cur||!confirm('Delete this post for good?'))return;
-  try{await api('DELETE','?id='+cur);blank();say('#msg','Deleted.');await list();}catch(e){say('#msg',e.message);}
+  try{await api('DELETE','?id='+cur);blank();await list();toast('Deleted.');}catch(e){toast(e.message,true);}
 };
 $('#exp').onclick=async function(){
   try{var ps=await api('GET','?all=1'),a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([JSON.stringify(ps,null,2)],{type:'application/json'}));
-    a.download='posts-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
-  catch(e){say('#msg',e.message);}
+    a.download='posts-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Backup downloaded.');}
+  catch(e){toast(e.message,true);}
 };
-if(pw)login();
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function inl(s){return s.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,'<a href="$2" rel="noopener nofollow">$1</a>');}
+function md(src){
+  var out=[],list=null,para=[];
+  function fl(){if(para.length){out.push('<p>'+inl(para.join(' '))+'</p>');para=[];}}
+  function cl(){if(list){out.push('</'+list+'>');list=null;}}
+  esc(src).split(/\r?\n/).forEach(function(ln){var m;
+    if(!ln.trim()){fl();cl();}
+    else if((m=ln.match(/^(#{1,3})\s+(.*)/))){fl();cl();var n=m[1].length+1;out.push('<h'+n+'>'+inl(m[2])+'</h'+n+'>');}
+    else if((m=ln.match(/^[-*]\s+(.*)/))){fl();if(list!=='ul'){cl();out.push('<ul>');list='ul';}out.push('<li>'+inl(m[1])+'</li>');}
+    else if((m=ln.match(/^\d+\.\s+(.*)/))){fl();if(list!=='ol'){cl();out.push('<ol>');list='ol';}out.push('<li>'+inl(m[1])+'</li>');}
+    else{cl();para.push(ln.trim());}
+  });
+  fl();cl();return out.join('\n');
+}
+if(pw)login();else $('#pw').focus();
 </script>
 </body>
 </html>
