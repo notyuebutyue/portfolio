@@ -27,10 +27,11 @@
     var m=el('div','main');
     (sec.text||[]).forEach(function(t){m.appendChild(el('p','',t));});
     if(sec.list&&sec.list.length){var l=el(sec.ordered?'ol':'ul');sec.list.forEach(function(i){l.appendChild(el('li','',i));});m.appendChild(l);}
-    if(sec.image&&sec.image.src){
-      var f=el('figure'),im=el('img');im.src=sec.image.src;im.alt=sec.image.alt||'';f.appendChild(im);
-      if(sec.image.caption)f.appendChild(el('figcaption','',sec.image.caption));m.appendChild(f);
-    }
+    [].concat(sec.image||[],sec.images||[]).forEach(function(g){
+      if(!g||!g.src)return;
+      var f=el('figure'),im=el('img');im.onerror=function(){if(f.parentNode)f.parentNode.removeChild(f);};im.src=g.src;im.alt=g.alt||'';im.loading='lazy';f.appendChild(im);
+      if(g.caption)f.appendChild(el('figcaption','',g.caption));m.appendChild(f);
+    });
     w.appendChild(m);s.appendChild(w);main.appendChild(s);
   });
 })();
