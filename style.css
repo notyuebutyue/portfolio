@@ -252,3 +252,11 @@ section{padding:clamp(36px,6vw,76px) 0}
   .btn,.b{transition:transform .15s,box-shadow .15s,background .15s,color .15s}
   .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
 }
+
+/* pagination */
+.pager{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.pager button{font:inherit;font-weight:800;min-width:42px;padding:8px 14px;border:3px solid currentColor;background:transparent;color:inherit;cursor:pointer;border-radius:0}
+.cases .pager{grid-column:1/-1;color:var(--lemon)}
+.cases .pager button:hover,.cases .pager button[aria-current=page]{background:var(--lemon);color:var(--sea)}
+.d-sec .pager{color:var(--ink)}
+.d-sec .pager button:hover,.d-sec .pager button[aria-current=page]{background:var(--ink);color:var(--lemon)}
