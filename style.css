@@ -182,3 +182,73 @@ h1{font-size:min(calc((100vw - 2 * var(--pad)) / 3.9),24rem)}
   .stamp{font-size:1.1rem;right:0}
 }
 @media(max-width:400px){.btn{padding:12px 16px}}
+
+/* ===== round 5: tighter layout, stickers, motion, detail pages ===== */
+section{padding:clamp(36px,6vw,76px) 0}
+.hero-grid{padding-bottom:clamp(28px,5vw,64px)}
+.skills .main,.exp .main,.arch .main{grid-column:1/-1}
+.skills .lab,.exp .lab,.arch .lab{margin-bottom:clamp(16px,2.4vw,32px)}
+.cases h2{margin-bottom:clamp(16px,3vw,32px)}
+.hero .wrap{position:relative}
+
+/* detail pages */
+.d-title{white-space:normal;font-size:clamp(1.9rem,5vw,3.8rem);line-height:.95;margin:clamp(10px,1.6vw,20px) 0 0}
+.d-sum{max-width:34em;font-size:clamp(1.2rem,2vw,1.7rem)}
+.hero-stk{position:absolute;right:var(--pad);top:clamp(40px,6vw,80px);display:flex;gap:0;align-items:center}
+.hero-stk .stk+.stk{margin-left:-22px}
+@media(min-width:821px){.hero .d-title,.hero .d-sum{padding-right:clamp(0px,20vw,300px)}}
+.dl{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:clamp(24px,4vw,64px);align-items:start;padding-top:clamp(28px,4vw,52px);padding-bottom:clamp(40px,6vw,80px)}
+.dl-main{min-width:0}
+.blk{margin-top:clamp(24px,3.4vw,44px)}.blk:first-child{margin-top:0}
+.blk h2{font-weight:900;font-variation-settings:"wdth" 62;text-transform:uppercase;font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:.95;border-top:3px solid var(--ink);padding-top:12px;margin-bottom:12px}
+.blk p,.blk ul,.blk ol{max-width:46em}.blk p+p{margin-top:.9em}
+.blk ul,.blk ol{margin:.8em 0 0 1.2em}.blk li{margin-bottom:6px}
+.blk figure{margin-top:1.2em;max-width:48em}
+.blk figure img{width:100%;height:auto;display:block;border:3px solid var(--ink)}
+.blk figcaption{font-family:var(--serif);font-style:italic;margin-top:6px}
+.post-body{max-width:46em}
+.dl-aside{position:sticky;top:20px;display:grid;gap:16px}
+.card{border:3px solid var(--ink);padding:16px 18px;background:var(--honey)}
+.card+.card{background:var(--sea);color:var(--lemon)}
+.card h3{font-weight:900;font-variation-settings:"wdth" 70;text-transform:uppercase;font-size:1.3rem;line-height:1;margin-bottom:10px}
+.card dt{font-weight:800}.card dd{margin:0 0 8px}
+.card ul{list-style:none}
+.card li a{display:block;padding:7px 0;border-top:2px solid currentColor;text-decoration:none;font-weight:700}
+.card li a:hover{padding-left:8px}
+@media(max-width:820px){
+  .dl{grid-template-columns:1fr}.dl-aside{position:static}
+  .hero-stk{position:static;margin-top:18px}
+}
+
+/* stickers */
+.stk{display:inline-flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-variation-settings:"wdth" 70;text-transform:uppercase;line-height:.95;color:var(--ink);transform:rotate(var(--r,-6deg))}
+.stk.burst{width:124px;height:124px;padding:22px;background:var(--matcha);font-size:1rem;clip-path:polygon(50% 0,61% 12%,75% 6%,79% 21%,94% 25%,89% 40%,100% 50%,89% 60%,94% 75%,79% 79%,75% 94%,61% 88%,50% 100%,39% 88%,25% 94%,21% 79%,6% 75%,11% 60%,0 50%,11% 40%,6% 25%,21% 21%,25% 6%,39% 12%)}
+.stk.round{width:108px;height:108px;padding:12px;border-radius:50%;background:var(--sea);color:var(--lemon);border:3px solid var(--ink);font-size:.95rem}
+
+/* marquee strip (added by fx.js) */
+.tick{overflow:hidden;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);background:var(--matcha);color:var(--ink);padding:10px 0;transform:rotate(-1deg);margin:28px -2vw 0;position:relative;z-index:2}
+.tick-track{display:flex;width:max-content}
+.tick-track span{font-weight:900;font-variation-settings:"wdth" 62;text-transform:uppercase;font-size:clamp(1.6rem,3.4vw,2.6rem);line-height:1;padding:0 1.2rem;white-space:nowrap}
+.tick-track span.alt{color:var(--sea)}
+.tick-track span::after{content:"";display:inline-block;width:.45em;height:.45em;background:currentColor;margin-left:2.4rem;transform:rotate(45deg)}
+.progress{position:fixed;top:0;left:0;height:5px;width:100%;background:var(--sea);transform-origin:0 50%;transform:scaleX(0);z-index:50}
+
+/* motion (off for people who prefer reduced motion) */
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:rotate(var(--r,-6deg)) translateY(0)}50%{transform:rotate(calc(var(--r,-6deg) + 3deg)) translateY(-8px)}}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:no-preference){
+  .hero h1,.d-title{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+  .tag,.d-sum,.back{animation:rise .8s .12s cubic-bezier(.2,.7,.2,1) both}
+  .intro,.cta{animation:rise .8s .24s cubic-bezier(.2,.7,.2,1) both}
+  .photo{animation:rise .9s .3s cubic-bezier(.2,.7,.2,1) both}
+  .stk{animation:bob 5s ease-in-out infinite}
+  .stamp{--r:-7deg;animation:bob 5s ease-in-out infinite}
+  .stk:hover,.stamp:hover{animation-play-state:paused}
+  .js .rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease var(--d,0ms),transform .6s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
+  .js .rv.in{opacity:1;transform:none}
+  .tick-track{animation:tick 28s linear infinite}
+  .tick:hover .tick-track{animation-play-state:paused}
+  .btn,.b{transition:transform .15s,box-shadow .15s,background .15s,color .15s}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+}
