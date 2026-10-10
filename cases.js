@@ -49,7 +49,7 @@ window.CASES = [
         ],
         "images": [
           {
-            "src": "images/net-01-speedtest.png",
+            "src": "images/net-01-speedtest.jpeg",
             "alt": "Speed test result showing download speed, upload speed, and ping",
             "caption": "Speed test result"
           },
