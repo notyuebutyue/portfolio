@@ -36,8 +36,8 @@ ${canonical ? `<link rel="canonical" href="${canonical}"><meta property="og:url"
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
-<style>.post-body{grid-column:1/-1;max-width:42em}.post-body h2,.post-body h3,.post-body h4{font-weight:800;font-variation-settings:"wdth" 85;line-height:1.1;margin:1.6em 0 .5em}.post-body h2{font-size:1.8rem}.post-body h3{font-size:1.4rem}.post-body p,.post-body ul,.post-body ol{margin-top:1em}.post-body ul,.post-body ol{margin-left:1.2em}.post-body a{font-weight:700}.post-body code{background:var(--honey);padding:1px 5px}</style>${extra}</head>
-<body>${NAV}${main}${FOOT}</body></html>`;
+<style>.post-body{max-width:46em}.post-body h2,.post-body h3,.post-body h4{font-weight:800;font-variation-settings:"wdth" 85;line-height:1.1;margin:1.6em 0 .5em}.post-body h2{font-size:1.8rem}.post-body h3{font-size:1.4rem}.post-body p,.post-body ul,.post-body ol{margin-top:1em}.post-body ul,.post-body ol{margin-left:1.2em}.post-body a{font-weight:700}.post-body code{background:var(--honey);padding:1px 5px}</style>${extra}</head>
+<body>${NAV}${main}${FOOT}<script src="/fx.js" defer></script></body></html>`;
 
 export default async function handler(req, res) {
   try {
@@ -53,8 +53,10 @@ export default async function handler(req, res) {
     const date = new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
     const canonical = `${SITE}/writing/${encodeURIComponent(p.slug)}`;
     const ld = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: p.title, datePublished: p.created_at, dateModified: p.updated_at, author: { '@type': 'Person', name: 'Yurida Zani' }, mainEntityOfPage: canonical }).replace(/</g, '\\u003c')}</script>`;
-    const main = `<header class="hero"><div class="wrap"><a class="back" href="/writing.html">All writing</a><h1 class="d-title">${esc(p.title)}</h1><dl class="meta">${p.category ? `<div><dt>Category</dt><dd>${esc(p.category)}</dd></div>` : ''}<div><dt>Date</dt><dd>${date}</dd></div></dl></div></header><section class="d-sec"><div class="wrap grid"><div class="post-body">${md(p.body)}</div></div></section>`;
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    const words = p.body.trim().split(/\s+/).filter(Boolean).length;
+    const mins = Math.max(1, Math.round(words / 200));
+    const main = `<header class="hero"><div class="wrap"><a class="back" href="/writing.html">All writing</a><h1 class="d-title">${esc(p.title)}</h1><div class="hero-stk"><span class="stk burst" style="--r:8deg">Beginner notes</span>${p.category ? `<span class="stk round" style="--r:-9deg">${esc(p.category)}</span>` : ''}</div></div></header><div class="wrap dl"><div class="dl-main"><article class="post-body">${md(p.body)}</article></div><aside class="dl-aside"><div class="card"><h3>About this post</h3><dl>${p.category ? `<dt>Category</dt><dd>${esc(p.category)}</dd>` : ''}<dt>Date</dt><dd>${date}</dd><dt>Reading time</dt><dd>${mins} min</dd></dl></div><nav class="card" aria-label="More"><h3>Keep reading</h3><ul><li><a href="/writing.html">All writing</a></li><li><a href="/#cases">Case studies</a></li></ul></nav></aside></div>`;
+    res.setHeader('Cache-Control', 'no-store');
     res.status(200).send(page(`${p.title} | Yurida Zani`, p.excerpt || p.title, canonical, main, ld));
   } catch (e) {
     console.error(e);
