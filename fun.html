@@ -171,7 +171,7 @@ footer a{text-decoration:none;border-bottom:3px solid currentColor}
   /* idols */
   var cards=document.getElementById('cards');
   (F.idols||[]).forEach(function(d,i){
-    var c=el('article','card');c.appendChild(el('div','n',String(i+1).padStart(2,'0')));c.appendChild(el('h3','',d.name));c.appendChild(el('p','',d.why));
+    var c=el('article','card');c.appendChild(el('div','n',String(i+1).padStart(2,'0')));c.appendChild(el('h3','',d.name));if(d.why)c.appendChild(el('p','',d.why));
     if(d.ig&&/^[A-Za-z0-9._]+$/.test(d.ig)){var a=el('a','','@'+d.ig+' on Instagram');a.href='https://instagram.com/'+d.ig;a.target='_blank';a.rel='noopener noreferrer';c.appendChild(a);}
     cards.appendChild(c);
   });
