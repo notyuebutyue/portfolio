@@ -54,7 +54,6 @@
       <div class="cta">
         <a class="btn solid" href="https://1drv.ms/b/c/2044f462849bb9ac/IQBFz-uVJ_5uQLx807udfdUaARjUzpIf9uBIYN5SBMhJlr8?e=SAF1aL">Grab my CV</a>
         <a class="btn" href="mailto:yuridazani.personal@gmail.com">Drop me a mail</a>
-        <a class="btn" href="https://wa.me/6282338351245">Chat on WhatsApp</a>
       </div>
       <figure class="photo">
         <div class="frame"><img src="Pic1.jpg" alt="Photo of Yurida Zani" width="640" height="800"></div>
@@ -173,7 +172,6 @@
       <div>
         <h3>Socials</h3>
         <ul>
-          <li><a href="https://wa.me/6282338351245">WhatsApp</a></li>
           <li><a href="https://linkedin.com/in/yurida-zani-b35321211/">LinkedIn</a></li>
           <li><a href="https://github.com/yuridazani">GitHub</a></li>
           <li><a href="https://medium.com/@yuridzn">Medium</a></li>
@@ -181,31 +179,34 @@
         </ul>
       </div>
       <div><h3>Based in</h3><p>Pandaan, East Java, Indonesia</p></div>
-      <div><p>&copy; <span id="year"></span> Yurida Zani. All Rights Reserved.</p></div>
+      <div><p>&copy; <span id="year"></span> Yurida Zani. All Rights Reserved.</p><p><a href="fun.html">Off duty</a></p></div>
     </footer>
   </div>
 </section>
 
 <script src="cases.js"></script>
 <script>
-document.getElementById("year").textContent = new Date().getFullYear();
-
 (function(){
-  var list=window.CASES||[],box=document.getElementById('case-list');
+  var list=window.CASES||[],box=document.getElementById('case-list'),PER=5,pg=1;
   if(!box||!list.length)return;
-  box.textContent='';
-  list.forEach(function(c){
-    var row=document.createElement('div');row.className='case';
-    var id=document.createElement('div');id.className='id';id.textContent=c.code||'';
-    var w=document.createElement('div');w.className='what';
-    var h=document.createElement('h3'),a=document.createElement('a');
-    a.href='project-detail.html?id='+encodeURIComponent(c.id);a.textContent=c.title;h.appendChild(a);
-    var p=document.createElement('p');p.textContent=c.summary||'';
-    w.appendChild(h);w.appendChild(p);
-    row.appendChild(id);row.appendChild(w);
-    if(c.status){var st=document.createElement('div');st.className='st';st.textContent=c.status;row.appendChild(st);}
-    box.appendChild(row);
-  });
+  var holder=document.createElement('div');holder.className='pager';box.parentNode.appendChild(holder);
+  function draw(){
+    box.textContent='';
+    list.slice((pg-1)*PER,pg*PER).forEach(function(c){
+      var row=document.createElement('div');row.className='case';
+      var id=document.createElement('div');id.className='id';id.textContent=c.code||'';
+      var w=document.createElement('div');w.className='what';
+      var h=document.createElement('h3'),a=document.createElement('a');
+      a.href='project-detail.html?id='+encodeURIComponent(c.id);a.textContent=c.title;h.appendChild(a);
+      var p=document.createElement('p');p.textContent=c.summary||'';
+      w.appendChild(h);w.appendChild(p);row.appendChild(id);row.appendChild(w);
+      if(c.status){var st=document.createElement('div');st.className='st';st.textContent=c.status;row.appendChild(st);}
+      box.appendChild(row);
+    });
+    holder.textContent='';var n=Math.ceil(list.length/PER);
+    if(n>1)for(var k=1;k<=n;k++)(function(k){var b=document.createElement('button');b.type='button';b.textContent=k;b.setAttribute('aria-label','Page '+k);if(k===pg)b.setAttribute('aria-current','page');b.onclick=function(){pg=k;draw();};holder.appendChild(b);})(k);
+  }
+  draw();
 })();
 </script>
 <script>
