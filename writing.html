@@ -49,7 +49,7 @@
 </header>
 
 <section class="d-sec">
-  <div class="wrap"><div id="list" aria-live="polite">Loading...</div></div>
+  <div class="wrap"><div id="list" aria-live="polite">Loading...</div><div class="pager" id="pager"></div></div>
 </section>
 
 <section class="contact" id="contact">
@@ -58,29 +58,32 @@
     <div class="row"><a class="mail" href="mailto:yuridazani.personal@gmail.com">yuridazani.personal@gmail.com</a></div>
     <footer class="foot">
       <div><h3>Socials</h3><ul>
-        <li><a href="https://wa.me/6282338351245">WhatsApp</a></li>
         <li><a href="https://linkedin.com/in/yurida-zani-b35321211/">LinkedIn</a></li>
         <li><a href="https://github.com/yuridazani">GitHub</a></li>
         <li><a href="https://medium.com/@yuridzn">Medium</a></li>
         <li><a href="https://instagram.com/saturdayyuri">Instagram</a></li>
       </ul></div>
       <div><h3>Based in</h3><p>Pandaan, East Java, Indonesia</p></div>
-      <div><p>&copy; 2026 Yurida Zani. All Rights Reserved.</p></div>
+      <div><p>&copy; 2026 Yurida Zani. All Rights Reserved.</p><p><a href="fun.html">Off duty</a></p></div>
     </footer>
   </div>
 </section>
 
 <script>
 (async function(){
-  var list=document.getElementById('list'),filters=document.getElementById('filters'),posts=[],cat='All';
-  function note(t){list.textContent='';var p=document.createElement('p');p.className='empty-note';p.textContent=t;list.appendChild(p);}
+  var list=document.getElementById('list'),filters=document.getElementById('filters'),posts=[],cat='All',pg=1,PER=10;
+  function note(t){document.getElementById('pager').textContent='';list.textContent='';var p=document.createElement('p');p.className='empty-note';p.textContent=t;list.appendChild(p);}
   try{var r=await fetch('/api/posts');posts=await r.json();if(!Array.isArray(posts))throw 0;}catch(e){note('Could not load posts right now. Please try again later.');return;}
   function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e;}
+  function pager(n){var h=document.getElementById('pager');h.textContent='';if(n<2)return;
+    for(var i=1;i<=n;i++)(function(i){var b=el('button','',String(i));b.type='button';b.setAttribute('aria-label','Page '+i);if(i===pg)b.setAttribute('aria-current','page');
+      b.onclick=function(){pg=i;render();window.scrollTo({top:0,behavior:'smooth'});};h.appendChild(b);})(i);}
   function render(){
     var shown=posts.filter(function(p){return cat==='All'||p.category===cat;});
     if(!shown.length){note(posts.length?'Nothing in this category yet.':'Nothing here yet. The first posts are on the way.');return;}
+    var pages=Math.max(1,Math.ceil(shown.length/PER));if(pg>pages)pg=pages;
     list.textContent='';
-    shown.forEach(function(p){
+    shown.slice((pg-1)*PER,pg*PER).forEach(function(p){
       var a=el('a','wrow'),ext=p.kind==='external';
       a.href=ext?p.url:'/writing/'+encodeURIComponent(p.slug);
       if(ext){a.target='_blank';a.rel='noopener';}
@@ -89,11 +92,12 @@
       var m=el('div','m',[ext?(p.source||'External link'):'On this site',p.category,d].filter(Boolean).join(', '));
       a.appendChild(l);a.appendChild(m);list.appendChild(a);
     });
+    pager(pages);
   }
   var cats=['All'].concat(Array.from(new Set(posts.map(function(p){return p.category;}).filter(Boolean))));
   if(cats.length>2)cats.forEach(function(c){
     var b=el('button','',c);b.type='button';b.setAttribute('aria-pressed',c===cat);
-    b.onclick=function(){cat=c;Array.prototype.forEach.call(filters.children,function(x){x.setAttribute('aria-pressed',x===b);});render();};
+    b.onclick=function(){cat=c;pg=1;Array.prototype.forEach.call(filters.children,function(x){x.setAttribute('aria-pressed',x===b);});render();};
     filters.appendChild(b);
   });
   render();
