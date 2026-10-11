@@ -18,6 +18,37 @@
 */
 window.CASES = [
   {
+  "id": "acer-e1-432-repair",
+  "code": "REAL-01",
+  "title": "Laptop repair and upgrade: Acer E1-432",
+  "category": "Hardware",
+  "date": "2024",
+  "status": "Personal project",
+  "tools": ["Replacement LCD", "Replacement keyboard", "512GB SSD", "8GB RAM", "Windows 10"],
+  "summary": "Replaced a damaged screen and keyboard on my own laptop, then upgraded it to an SSD, 8GB of RAM, and Windows 10.",
+  "sections": [
+    { "heading": "Problem", "text": [
+      "My own laptop, an Acer E1-432, had a damaged screen (a blue screen and lines that kept growing across the display) and a keyboard that no longer responded. It also still ran on its original hardware: a hard drive, 4GB of RAM, and Windows 8."
+    ] },
+    { "heading": "What I did", "ordered": true, "list": [
+      "Diagnosed the screen as damaged and the keyboard as unresponsive.",
+      "Bought a replacement LCD and keyboard, and replaced both myself.",
+      "Replaced the hard drive with a 512GB SSD.",
+      "Upgraded the RAM from 4GB to 8GB.",
+      "Reinstalled the operating system, moving from Windows 8 to Windows 10."
+    ] },
+    { "heading": "Result", "text": [
+      "Boot time and overall speed improved noticeably. The laptop now reports an Intel Celeron 2955U, 8GB of RAM, and a 512GB SSD. The total cost was about IDR 1.7 million."
+    ],
+    "images": [
+      { "src": "images/acer-specs.png", "alt": "Windows device specifications showing an Intel Celeron 2955U, 8GB of RAM, and a 512GB SSD", "caption": "Specs after the upgrade" }
+    ] },
+    { "heading": "Notes", "text": [
+      "This was my own laptop, not a client or employer device."
+    ] }
+  ]
+},  
+  {
     "id": "network-diagnostics",
     "code": "NET-01",
     "title": "Checking a small office network",
