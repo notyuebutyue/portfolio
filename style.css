@@ -276,3 +276,22 @@ section{padding:clamp(36px,6vw,76px) 0}
 .more .t2{display:none}.more[open] .t1{display:none}.more[open] .t2{display:inline}
 .more ul{margin-top:18px}
 @media(max-width:900px){.feat{grid-template-columns:1fr}}
+
+/* project screenshot covers and lightbox */
+.fcard .cover{margin:-20px -20px 4px;border-bottom:3px solid var(--ink)}
+.cvb{display:block;position:relative;width:100%;padding:0;border:0;background:var(--ink);cursor:pointer}
+.cvb img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.cvb .vb{position:absolute;right:10px;bottom:10px;background:var(--lemon);color:var(--ink);border:3px solid var(--ink);font-weight:800;font-size:.9rem;padding:4px 10px}
+.cvb:hover .vb{background:var(--ink);color:var(--lemon)}
+.tech summary{cursor:pointer;font-weight:800;text-decoration:underline}
+.tech ul{margin:8px 0 0 1.1em}.tech li{margin-bottom:5px}
+.lb{position:fixed;top:0;right:0;bottom:0;left:0;z-index:100;background:rgba(55,37,22,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}
+.lb[hidden]{display:none}
+.lb figure{max-width:min(1100px,100%);margin:0}
+.lb img{display:block;max-width:100%;max-height:70vh;margin:0 auto;border:3px solid var(--lemon);background:var(--ink)}
+.lb figcaption{color:var(--lemon);font-family:var(--serif);font-style:italic;text-align:center;margin-top:8px;min-height:1.5em}
+.lb-bar{display:flex;gap:14px;align-items:center;color:var(--lemon);font-weight:800}
+.lb button{font:inherit;font-weight:800;padding:8px 16px;border:3px solid var(--lemon);background:transparent;color:var(--lemon);cursor:pointer;border-radius:0}
+.lb button:hover{background:var(--lemon);color:var(--ink)}
+.lb :focus-visible{outline:3px solid var(--lemon);outline-offset:3px}
+.lb-x{position:absolute;top:12px;right:12px}
