@@ -29,6 +29,9 @@ window.CASES = [
   "sections": [
     { "heading": "Problem", "text": [
       "My own laptop, an Acer E1-432, had a damaged screen (a blue screen and lines that kept growing across the display) and a keyboard that no longer responded. It also still ran on its original hardware: a hard drive, 4GB of RAM, and Windows 8."
+    ],
+    "images": [
+      { "src": "images/acer-damaged-screen", "alt": "The laptop screen showing a blue screen and lines across the display", "caption": "The damaged screen before the replacement" }
     ] },
     { "heading": "What I did", "ordered": true, "list": [
       "Diagnosed the screen as damaged and the keyboard as unresponsive.",
