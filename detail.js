@@ -32,7 +32,10 @@
     [].concat(sec.image||[],sec.images||[]).forEach(function(g){
       if(!g||!g.src)return;
       var f=el('figure'),im=el('img');im.onerror=function(){if(f.parentNode)f.parentNode.removeChild(f);};
-      im.src=g.src;im.alt=g.alt||'';im.loading='lazy';f.appendChild(im);
+      var base=g.src,ext=['png','jpg','jpeg','webp'],n=0;
+      if(/\.[a-z0-9]+$/i.test(base))im.src=base;
+      else{im.onerror=function(){n++;if(n<ext.length)im.src=base+'.'+ext[n];else if(f.parentNode)f.parentNode.removeChild(f);};im.src=base+'.'+ext[0];}
+      im.alt=g.alt||'';im.loading='lazy';f.appendChild(im);
       if(g.caption)f.appendChild(el('figcaption','',g.caption));s.appendChild(f);
     });
     col.appendChild(s);
