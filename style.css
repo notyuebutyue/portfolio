@@ -295,3 +295,20 @@ section{padding:clamp(36px,6vw,76px) 0}
 .lb button:hover{background:var(--lemon);color:var(--ink)}
 .lb :focus-visible{outline:3px solid var(--lemon);outline-offset:3px}
 .lb-x{position:absolute;top:12px;right:12px}
+
+/* code blocks and ticket cards in case studies */
+.code{background:var(--ink);color:var(--lemon);padding:14px 16px;margin-top:1em;overflow-x:auto;font:.9rem/1.5 ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;max-width:46em;border:3px solid var(--ink);white-space:pre}
+.tk{border:3px solid var(--ink);background:var(--honey);margin-top:1em;max-width:52em;box-shadow:6px 6px 0 var(--ink)}
+.tk-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;background:var(--ink);color:var(--lemon);padding:10px 16px}
+.tk-id{font-weight:900;font-variation-settings:"wdth" 70;font-size:1.3rem;letter-spacing:.04em}
+.tk-c{display:flex;gap:8px;flex-wrap:wrap}
+.tk .chip{background:var(--lemon);color:var(--ink);font-weight:800;font-size:.85rem;padding:2px 10px}
+.tk .chip.ok{background:var(--matcha)}
+.tk-m{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-bottom:3px solid var(--ink)}
+.tk-m div{padding:10px 16px}.tk-m dt{font-weight:800;font-size:.85rem}.tk-m dd{margin:0}
+.tk-b{display:grid;grid-template-columns:minmax(110px,150px) minmax(0,1fr)}
+.tk-b dt{font-weight:800;padding:12px 0 12px 16px;border-top:2px solid var(--ink)}
+.tk-b dd{margin:0;padding:12px 16px 12px 8px;border-top:2px solid var(--ink)}
+.tk-b dt:first-of-type,.tk-b dd:first-of-type{border-top:0}
+.tk-b ol,.tk-b ul{margin:0 0 0 1.1em}.tk-b li{margin-bottom:5px}
+@media(max-width:600px){.tk-b{grid-template-columns:1fr}.tk-b dt{padding:12px 16px 0}.tk-b dd{border-top:0;padding:4px 16px 12px}.tk-b dt:first-of-type{border-top:0}}
