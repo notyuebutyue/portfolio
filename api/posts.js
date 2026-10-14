@@ -11,6 +11,17 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
       const { id, all } = req.query;
+      if (req.query.kind === 'case') {
+        const cr = rows(await db.execute("SELECT slug,title,category,excerpt,body FROM posts WHERE kind='case' AND status='published' ORDER BY created_at DESC"));
+        const out = [];
+        for (const c of cr) {
+          try {
+            const j = JSON.parse(c.body);
+            out.push({ id: c.slug, title: c.title, category: c.category, summary: c.excerpt, code: j.code || '', status: j.status || '', date: j.date || '', tools: Array.isArray(j.tools) ? j.tools : [], sections: Array.isArray(j.sections) ? j.sections : [] });
+          } catch (e) { /* skip a broken case */ }
+        }
+        return res.status(200).json(out);
+      }
       if (id || all) {
         if (!admin) return deny(res);
         if (id) {
@@ -19,7 +30,7 @@ export default async function handler(req, res) {
         }
         return res.status(200).json(rows(await db.execute('SELECT * FROM posts ORDER BY created_at DESC')));
       }
-      const r = await db.execute("SELECT id,slug,kind,title,category,excerpt,url,source,created_at FROM posts WHERE status='published' ORDER BY created_at DESC");
+      const r = await db.execute("SELECT id,slug,kind,title,category,excerpt,url,source,created_at FROM posts WHERE status='published' AND kind!='case' ORDER BY created_at DESC");
       return res.status(200).json(rows(r));
     }
 
@@ -29,12 +40,16 @@ export default async function handler(req, res) {
       const b = req.body || {};
       const title = String(b.title || '').trim().slice(0, 200);
       if (!title) return res.status(400).json({ error: 'Title is required' });
-      const kind = b.kind === 'external' ? 'external' : 'own';
+      const kind = b.kind === 'external' ? 'external' : b.kind === 'case' ? 'case' : 'own';
       const status = b.status === 'published' ? 'published' : 'draft';
       const category = String(b.category || '').trim().slice(0, 40);
       const url = String(b.url || '').trim().slice(0, 500);
       if (kind === 'external' && !/^https?:\/\//i.test(url)) return res.status(400).json({ error: 'A valid link (https://...) is required' });
-      const body = String(b.body || '').slice(0, 60000);
+      const body = String(b.body || '').slice(0, 120000);
+      if (kind === 'case') {
+        try { const j = JSON.parse(body); if (!j || !Array.isArray(j.sections)) throw new Error('x'); }
+        catch (e) { return res.status(400).json({ error: 'The case study data is invalid or too long' }); }
+      }
       let excerpt = String(b.excerpt || '').trim().slice(0, 300);
       if (!excerpt && kind === 'own') excerpt = body.replace(/[#*_`>\[\]()-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
       const source = String(b.source || '').trim().slice(0, 40);
