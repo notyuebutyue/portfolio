@@ -221,8 +221,9 @@
 </section>
 
 <script src="cases.js"></script>
+<script src="cases-api.js"></script>
 <script>
-(function(){
+(window.casesReady||Promise.resolve()).then(function(){
   var list=window.CASES||[],box=document.getElementById('case-list'),PER=5,pg=1;
   if(!box||!list.length)return;
   var holder=document.createElement('div');holder.className='pager';box.parentNode.appendChild(holder);
@@ -243,7 +244,7 @@
     if(n>1)for(var k=1;k<=n;k++)(function(k){var b=document.createElement('button');b.type='button';b.textContent=k;b.setAttribute('aria-label','Page '+k);if(k===pg)b.setAttribute('aria-current','page');b.onclick=function(){pg=k;draw();};holder.appendChild(b);})(k);
   }
   draw();
-})();
+});
 </script>
 <script>
 (function(){
