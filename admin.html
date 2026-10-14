@@ -87,6 +87,10 @@ textarea.in{min-height:380px;resize:vertical}
 #toast.show{transform:none}
 #toast.bad{background:var(--honey);color:var(--ink)}
 @media(prefers-reduced-motion:no-preference){#toast{transition:transform .2s}}
+.sc{border:3px solid var(--ink);padding:14px 16px 16px;margin:0 0 14px;background:rgba(255,255,255,.18)}
+.sc-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.sc-h span{display:flex;gap:6px;flex-wrap:wrap}
+.chk{display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:700}
 @media(max-width:900px){
   #login{grid-template-columns:1fr}.l-art{min-height:38vh}
   .ws{grid-template-columns:1fr}.side{position:static;max-height:300px;border-right:0;border-bottom:3px solid var(--ink)}
@@ -131,6 +135,7 @@ textarea.in{min-height:380px;resize:vertical}
         <div class="seg" role="radiogroup" aria-label="Type">
           <label><input type="radio" name="kind" value="own" checked><span>Written here</span></label>
           <label><input type="radio" name="kind" value="external"><span>Link to Medium, Kompasiana...</span></label>
+          <label><input type="radio" name="kind" value="case"><span>Case study</span></label>
         </div>
       </div>
 
@@ -150,6 +155,19 @@ textarea.in{min-height:380px;resize:vertical}
           <label class="f" for="url"><span>Link</span><input class="in" id="url" placeholder="https://..."></label>
           <label class="f" for="source"><span>Source name</span><input class="in" id="source" maxlength="40" placeholder="Medium, Kompasiana..."></label>
         </div>
+      </div>
+
+      <div id="casef" class="hide">
+        <div class="row">
+          <label class="f" for="ccode"><span>Code <small>(e.g. NET-03)</small></span><input class="in" id="ccode" maxlength="20"></label>
+          <label class="f" for="cstatus"><span>Label <small>(Personal project, Home lab, Simulated scenario...)</small></span><input class="in" id="cstatus" maxlength="40"></label>
+        </div>
+        <div class="row">
+          <label class="f" for="cdate"><span>Date <small>(optional)</small></span><input class="in" id="cdate" maxlength="30"></label>
+          <label class="f" for="ctools"><span>Tools <small>(separate with commas)</small></span><input class="in" id="ctools" maxlength="200"></label>
+        </div>
+        <div class="f"><span>Sections</span><div id="secs"></div><button class="b s" id="addsec" type="button">Add section</button></div>
+        <p class="hint">Images: upload the files to the images folder on GitHub first, then write the file name (with extension) in the Images box.</p>
       </div>
 
       <label class="f" for="excerpt"><span>Short summary <small>(shown on the cards)</small></span><input class="in" id="excerpt" maxlength="300"></label>
@@ -187,21 +205,21 @@ async function api(method,q,body){
 }
 function rv(n){return document.querySelector('input[name='+n+']:checked').value;}
 function sv(n,v){document.querySelector('input[name='+n+'][value='+v+']').checked=true;}
-function ui(){var ext=rv('kind')==='external';$('#extf').classList.toggle('hide',!ext);$('#ownf').classList.toggle('hide',ext);}
+function ui(){var k=rv('kind');$('#extf').classList.toggle('hide',k!=='external');$('#ownf').classList.toggle('hide',k!=='own');$('#casef').classList.toggle('hide',k!=='case');}
 function mark(){dirty=true;$('#dirty').textContent='Unsaved changes';wc();}
 function clean(){dirty=false;$('#dirty').textContent='';}
 function wc(){var w=$('#body').value.trim().split(/\s+/).filter(Boolean).length;$('#wc').textContent=w+(w===1?' word':' words');}
 function mode(p){$('#tw').setAttribute('aria-pressed',!p);$('#tp').setAttribute('aria-pressed',p);$('#wr').classList.toggle('hide',p);$('#pv').classList.toggle('hide',!p);if(p)$('#pv').innerHTML=md($('#body').value)||'<p>Nothing to preview yet.</p>';}
-function blank(){cur=null;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value='';});sv('kind','own');sv('status','draft');$('#del').classList.add('hide');$('#edt').textContent='New post';mode(false);ui();wc();clean();mark_on();}
+function blank(){cur=null;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value='';});sv('kind','own');sv('status','draft');clearCase();$('#del').classList.add('hide');$('#edt').textContent='New post';mode(false);ui();wc();clean();mark_on();}
 function mark_on(){document.querySelectorAll('.pl button').forEach(function(b){b.classList.toggle('on',+b.dataset.id===cur);});}
-function fill(p){if(dirty&&!confirm('Discard unsaved changes?'))return;cur=p.id;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value=p[k]||'';});sv('kind',p.kind);sv('status',p.status);$('#del').classList.remove('hide');$('#edt').textContent='Edit post';mode(false);ui();wc();clean();mark_on();window.scrollTo({top:0,behavior:'smooth'});}
+function fill(p){if(dirty&&!confirm('Discard unsaved changes?'))return;cur=p.id;['title','category','url','source','excerpt','body'].forEach(function(k){$('#'+k).value=p[k]||'';});sv('kind',p.kind);sv('status',p.status);loadCase(p);$('#del').classList.remove('hide');$('#edt').textContent='Edit post';mode(false);ui();wc();clean();mark_on();window.scrollTo({top:0,behavior:'smooth'});}
 async function list(){
   var ps=await api('GET','?all=1'),ul=$('#plist');ul.textContent='';
   if(!ps.length){var n=document.createElement('li');n.className='none';n.textContent='No posts yet. Write your first one.';ul.appendChild(n);}
   ps.forEach(function(p){
     var li=document.createElement('li'),b=document.createElement('button'),t=document.createElement('span'),m=document.createElement('span'),c=document.createElement('span');
     b.type='button';b.dataset.id=p.id;t.className='t';t.textContent=p.title;m.className='m';c.className='chip'+(p.status==='published'?' pub':'');c.textContent=p.status==='published'?'Published':'Draft';
-    m.appendChild(c);m.appendChild(document.createTextNode(p.kind==='external'?'Link':'Own post'));b.appendChild(t);b.appendChild(m);b.onclick=function(){fill(p);};li.appendChild(b);ul.appendChild(li);
+    m.appendChild(c);m.appendChild(document.createTextNode(p.kind==='external'?'Link':(p.kind==='case'?'Case study':'Own post')));b.appendChild(t);b.appendChild(m);b.onclick=function(){fill(p);};li.appendChild(b);ul.appendChild(li);
   });
   mark_on();
 }
@@ -226,6 +244,7 @@ function pre(p){var t=$('#body'),s=t.selectionStart,v=t.value,ls=v.lastIndexOf('
 document.querySelectorAll('.tools button').forEach(function(b){b.onclick=function(){var k=b.dataset.t;if(k==='h')pre('## ');else if(k==='u')pre('- ');else if(k==='b')wrap('**','**','bold text');else if(k==='i')wrap('*','*','italic text');else wrap('[','](https://)','link text');};});
 async function save(){
   var d={id:cur,kind:rv('kind'),title:$('#title').value,category:$('#category').value,status:rv('status'),url:$('#url').value,source:$('#source').value,excerpt:$('#excerpt').value,body:$('#body').value};
+  if(d.kind==='case')d.body=JSON.stringify(readCase());
   $('#save').disabled=true;
   try{var r=await api('POST','',d);cur=r.id;$('#del').classList.remove('hide');$('#edt').textContent='Edit post';clean();await list();toast('Saved.');}
   catch(e){toast(e.message,true);}
@@ -259,6 +278,50 @@ function md(src){
   });
   fl();cl();return out.join('\n');
 }
+
+function secCard(s){
+  s=s||{};var d=document.createElement('div');d.className='sc';
+  d.innerHTML='<div class="sc-h"><strong>Section</strong><span><button type="button" class="b s" data-a="up">Up</button><button type="button" class="b s" data-a="dn">Down</button><button type="button" class="b s" data-a="rm">Remove</button></span></div>'
+   +'<label class="f"><span>Heading</span><input class="in s-h" maxlength="120"></label>'
+   +'<label class="f"><span>Text <small>(blank line = new paragraph)</small></span><textarea class="in s-t" style="min-height:110px"></textarea></label>'
+   +'<label class="f"><span>List <small>(one item per line)</small></span><textarea class="in s-l" style="min-height:90px"></textarea></label>'
+   +'<label class="chk"><input type="checkbox" class="s-o"> Numbered list</label>'
+   +'<label class="f"><span>Code <small>(optional)</small></span><textarea class="in s-c" style="min-height:80px"></textarea></label>'
+   +'<label class="f"><span>Images <small>(one per line: file name | description | caption)</small></span><textarea class="in s-i" style="min-height:70px"></textarea></label>';
+  var q=function(c){return d.querySelector(c);};
+  q('.s-h').value=s.heading||'';q('.s-t').value=(s.text||[]).join('\n\n');q('.s-l').value=(s.list||[]).join('\n');q('.s-o').checked=!!s.ordered;q('.s-c').value=s.code||'';
+  q('.s-i').value=(s.images||[]).map(function(g){return [String(g.src||'').replace(/^images\//,''),g.alt||'',g.caption||''].join(' | ');}).join('\n');
+  return d;
+}
+function clearCase(){['ccode','cstatus','cdate','ctools'].forEach(function(k){$('#'+k).value='';});$('#secs').textContent='';}
+function loadCase(p){
+  clearCase();if(p.kind!=='case')return;
+  var j={};try{j=JSON.parse(p.body)||{};}catch(e){}
+  $('#ccode').value=j.code||'';$('#cstatus').value=j.status||'';$('#cdate').value=j.date||'';$('#ctools').value=(j.tools||[]).join(', ');
+  (j.sections||[]).forEach(function(s){$('#secs').appendChild(secCard(s));});
+}
+function readCase(){
+  var tr=function(x){return x.trim();};
+  var secs=[].map.call(document.querySelectorAll('#secs .sc'),function(d){
+    var q=function(c){return d.querySelector(c);},o={heading:q('.s-h').value.trim()};
+    var t=q('.s-t').value.split(/\n\s*\n/).map(tr).filter(Boolean);if(t.length)o.text=t;
+    var l=q('.s-l').value.split('\n').map(tr).filter(Boolean);if(l.length){o.list=l;if(q('.s-o').checked)o.ordered=true;}
+    var c=q('.s-c').value.replace(/\s+$/,'');if(c.trim())o.code=c;
+    var im=q('.s-i').value.split('\n').map(tr).filter(Boolean).map(function(x){var p=x.split('|').map(tr);return {src:'images/'+p[0].replace(/^images\//,''),alt:p[1]||'',caption:p[2]||''};});
+    if(im.length)o.images=im;
+    return o;
+  });
+  return {code:$('#ccode').value.trim(),status:$('#cstatus').value.trim(),date:$('#cdate').value.trim(),tools:$('#ctools').value.split(',').map(tr).filter(Boolean),sections:secs};
+}
+$('#addsec').onclick=function(){$('#secs').appendChild(secCard());mark();};
+$('#secs').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-a]');if(!b)return;
+  var c=b.closest('.sc'),a=b.getAttribute('data-a');
+  if(a==='rm'){if(confirm('Remove this section?')){c.remove();mark();}}
+  else if(a==='up'&&c.previousElementSibling){c.parentNode.insertBefore(c,c.previousElementSibling);mark();}
+  else if(a==='dn'&&c.nextElementSibling){c.parentNode.insertBefore(c.nextElementSibling,c);mark();}
+});
+$('#casef').addEventListener('input',mark);
 if(pw)login();else $('#pw').focus();
 </script>
 </body>
