@@ -1,4 +1,4 @@
-(function(){
+(window.casesReady||Promise.resolve()).then(function(){
   var main=document.getElementById('case');
   var id=new URLSearchParams(location.search).get('id');
   var c=(window.CASES||[]).filter(function(x){return x.id===id;})[0];
@@ -69,4 +69,4 @@
   (c.sections||[]).forEach(function(sec,i){var li=el('li'),a=el('a','',sec.heading||'');a.href='#s'+i;li.appendChild(a);ul.appendChild(li);});
   nav.appendChild(ul);aside.appendChild(nav);
   body.appendChild(col);body.appendChild(aside);main.appendChild(body);
-})();
+});
