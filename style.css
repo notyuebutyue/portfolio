@@ -312,3 +312,7 @@ section{padding:clamp(36px,6vw,76px) 0}
 .tk-b dt:first-of-type,.tk-b dd:first-of-type{border-top:0}
 .tk-b ol,.tk-b ul{margin:0 0 0 1.1em}.tk-b li{margin-bottom:5px}
 @media(max-width:600px){.tk-b{grid-template-columns:1fr}.tk-b dt{padding:12px 16px 0}.tk-b dd{border-top:0;padding:4px 16px 12px}.tk-b dt:first-of-type{border-top:0}}
+
+/* skills: five tiles */
+.skills .main>div:nth-child(4){grid-column:span 2}
+@media(max-width:900px){.skills .main>div:nth-child(4){grid-column:auto}}
