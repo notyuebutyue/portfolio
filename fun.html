@@ -178,12 +178,22 @@ footer a{text-decoration:none;border-bottom:3px solid currentColor}
   /* menu */
   var menu=document.getElementById('menu');
   (F.dopamine||[]).forEach(function(t){menu.appendChild(el('li','',t));});
+  /* book covers: looked up once per visit from Open Library, kept in sessionStorage */
+  function lookup(title,cb){
+    var key='cover:'+title;
+    try{var c=sessionStorage.getItem(key);if(c!==null)return cb(c||null);}catch(e){}
+    fetch('https://openlibrary.org/search.json?title='+encodeURIComponent(title)+'&limit=1&fields=cover_i')
+      .then(function(r){return r.json();})
+      .then(function(j){var id=j.docs&&j.docs[0]&&j.docs[0].cover_i,u=id?'https://covers.openlibrary.org/b/id/'+id+'-M.jpg':'';try{sessionStorage.setItem(key,u);}catch(e){}cb(u||null);})
+      .catch(function(){cb(null);});
+  }
   /* now */
   var strips=document.getElementById('strips');
   (F.now||[]).forEach(function(n){
     var s=el('div','strip'),cv;
     if(n.cover&&/^https:\/\//.test(n.cover)){cv=el('img','cov');cv.src=n.cover;cv.alt='';cv.loading='lazy';cv.referrerPolicy='no-referrer';cv.onerror=function(){var d=el('div','cov',(n.title||'?').charAt(0));cv.replaceWith(d);};}
     else cv=el('div','cov',(n.title||'?').charAt(0));
+    if(n.type==='book'&&!n.cover){lookup(n.title,function(u){if(!u)return;var t=new Image();t.onload=function(){var im=el('img','cov');im.src=u;im.alt='';im.referrerPolicy='no-referrer';cv.replaceWith(im);};t.src=u;});}
     var b=el('div');b.appendChild(el('div','lbl',n.label||''));b.appendChild(el('h3','',n.title||''));if(n.note)b.appendChild(el('p','',n.note));
     s.appendChild(cv);s.appendChild(b);strips.appendChild(s);
   });
