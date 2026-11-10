@@ -7,6 +7,8 @@
              "why" is one sentence. Leave "" to hide it.
   dopamine : short lines, as many as you like.
   now      : label (Reading, Listening, Working on...), title, optional note, optional cover (a full https image link).
+             type: "book" looks the cover up automatically from Open Library (if it has one).
+             A cover you write yourself always wins over the automatic one.
 */
 window.FUN = {
   playlists: [
@@ -26,7 +28,7 @@ window.FUN = {
   ],
   now: [
     { label: "Listening", title: "A DPR IAN playlist", note: "", cover: "" },
-    { label: "Reading", title: "Negeri 5 Menara", note: "The trilogy, and I'm still on the first book.", cover: "" },
+    { label: "Reading", type: "book", title: "Negeri 5 Menara", note: "The trilogy", cover: "" },
     { label: "Working on", title: "Myself", note: "In every area I can think of.", cover: "" }
   ]
 };
