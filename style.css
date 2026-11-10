@@ -316,3 +316,6 @@ section{padding:clamp(36px,6vw,76px) 0}
 /* skills: five tiles */
 .skills .main>div:nth-child(4){grid-column:span 2}
 @media(max-width:900px){.skills .main>div:nth-child(4){grid-column:auto}}
+
+/* hero title: "Admin & Ops" is a little wider than the old one */
+h1{font-size:min(calc((100vw - 2 * var(--pad)) / 4.4),24rem)}
